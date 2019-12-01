@@ -26,7 +26,14 @@ class Controller():
 
 	def setup_node(self):
 		print("Doing setup")
+
+
 		self.nodeloc.reset()
+
+		try:
+			self.nodeloc.detach_kernel_driver(0)
+		except:
+			True
 
 		try:
 			self.nodeloc.set_configuration()
@@ -34,6 +41,7 @@ class Controller():
 			self.node = usb.util.find_descriptor(self.cfg[(0,0)], custom_match = lambda e: usb.util.endpoint_direction(e.bEndpointAddress) == usb.util.ENDPOINT_OUT)
 		except Exception as e:
 			exc = sys.exc_info()
+			print(str(exec[1]))
 			if exc[0] is usb.core.USBError:
 				print('Error getting config/descriptor, are you running as root?')
 				quit(1)
